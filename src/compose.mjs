@@ -2,7 +2,7 @@
 // The writer only sees ledger items and must cite them by id; any id it invents is dropped in code
 // (provenance check), so every partner, podcast, artist and reference in the plan is a real Qloo result.
 import { z } from 'zod';
-import { llm, hasModel, WRITER_MODEL, FAST_MODEL } from './llm.mjs';
+import { llm, hasModel, WRITER_MODEL } from './llm.mjs';
 import { usable } from './safety.mjs';
 
 const planSchema = z.object({
@@ -22,7 +22,7 @@ Rules:
 - Cite only ids from the list. Never mention a brand, podcast, artist or title that is not in the list.
 - The data says what the audience also likes; it is not proof of anything else. Say "your audience also loves", never "your customers are" or invented numbers.
 - Prefer specific, surprising items over generic giants when both fit.
-- Partners: complementary, never direct competitors. Outreach is a draft the owner will edit; no false claims about the sender. Mention once, in plain words, that the overlap comes from Qloo taste data.
+- Partners: complementary, never direct competitors (no business in the same food, drink or product category). Outreach is a draft the owner will edit; no false claims about the sender. Mention once, in plain words, that the overlap comes from Qloo taste data.
 - Say nothing about an item beyond its name and description (no locations, founders or facts you were not given).
 - Write names in prose, never ids. Ids go only in the id fields.`;
 
@@ -70,7 +70,8 @@ const guessSchema = z.object({
 export async function guess(brief, ledger) {
   if (!hasModel()) return null;
   const seeds = ledger.seeds.map((s) => s.name).join(' + ') || brief.name;
-  const r = await llm(FAST_MODEL, {
+  // same model as the plan, so the control is not handicapped
+  const r = await llm(WRITER_MODEL, {
     schema: guessSchema,
     prompt: `Business: ${seeds}. ${brief.text}\nWithout looking anything up: which 5 brands would its audience also love (good co-marketing partners, not competitors), which 5 podcasts do they listen to, which 8 artists, which 5 films?`,
   });

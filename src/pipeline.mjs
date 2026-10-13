@@ -30,7 +30,7 @@ export async function run(brief, { log = () => {} } = {}) {
     guess: g,
     overlap: g ? overlap(g, ledger) : null,
     meta: {
-      models: hasModel() ? { research: FAST_MODEL, safety: FAST_MODEL, plan: WRITER_MODEL, guess: FAST_MODEL } : null,
+      models: hasModel() ? { research: FAST_MODEL, safety: FAST_MODEL, plan: WRITER_MODEL, guess: WRITER_MODEL } : null,
       qloo: { calls: stats.calls - calls0, cached: stats.cached - cached0, data_from: fetched[0] || null },
       trace: ledger.trace, summary: ledger.summary, notes: ledger.notes, ms: Date.now() - t0,
     },

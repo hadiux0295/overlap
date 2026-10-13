@@ -48,7 +48,7 @@ export function researchTools(ledger) {
       inputSchema: z.object({
         type: z.enum([...OUTPUTS, 'place', 'tv_show', 'book']),
         location: z.string().optional(),
-        age: z.enum(['24_and_younger', '25_to_29', '30_to_34', '35_and_younger', '36_to_55', '55_and_older']).optional(),
+        age: z.enum(['24_and_younger', '25_to_29', '30_to_34', '35_to_44', '45_to_54', '55_and_older', '35_and_younger', '36_to_55']).optional(),
       }),
       execute: async ({ type, location, age }) => {
         if (!ledger.seeds.length) return { error: 'call set_seeds first' };
