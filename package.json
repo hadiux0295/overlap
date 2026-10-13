@@ -1,0 +1,17 @@
+{
+  "name": "audience-agent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "run": "node src/run.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@ai-sdk/google": "^4.0.93",
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "ai": "^7.0.137",
+    "zod": "^4.6.5"
+  }
+}
