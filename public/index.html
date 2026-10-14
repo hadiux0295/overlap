@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Overlap — who else does your audience love?</title>
+  <meta name="description" content="An agent that reads Qloo taste data on your audience and turns it into partners to pitch, podcasts to sponsor, a playlist and content ideas.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="/"><span class="mark" aria-hidden="true"><i></i><i></i></span>Overlap</a>
+    <nav><a href="#how">How it works</a><a href="#mcp">MCP</a><a id="repo-link" href="https://github.com/hadiux0295/audience-agent">Code</a></nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="kicker">Audience-to-action agent · Qloo taste data</p>
+      <h1>Who else does your <em>audience</em> love?</h1>
+      <p class="lede">Name your shop, brand or channel. An agent reads Qloo's taste data on the people who like you and comes back with partners to pitch, podcasts to sponsor, a playlist and content ideas — every pick traceable to the data.</p>
+
+      <form id="f" class="ask" autocomplete="off">
+        <div class="row">
+          <label class="grow"><span>Business, venue or creator</span>
+            <input id="name" name="name" maxlength="80" placeholder="e.g. Tartine Bakery" required></label>
+          <fieldset class="seg" id="type">
+            <legend>It is a</legend>
+            <label><input type="radio" name="type" value="brand" checked><span>Brand</span></label>
+            <label><input type="radio" name="type" value="place"><span>Venue</span></label>
+            <label><input type="radio" name="type" value="person"><span>Creator</span></label>
+            <label><input type="radio" name="type" value="podcast"><span>Podcast</span></label>
+          </fieldset>
+        </div>
+        <div class="row">
+          <label class="city" id="city-wrap"><span>City <small>(venues)</small></span>
+            <input id="city" name="city" maxlength="60" placeholder="San Francisco"></label>
+          <label class="grow"><span>What do you want? <small>(optional)</small></span>
+            <input id="brief" name="brief" maxlength="400" placeholder="Local partners and a store playlist"></label>
+        </div>
+        <div class="go">
+          <button id="run" type="submit">Run the agent</button>
+          <p class="hint" id="live-hint">Takes about 30 seconds.</p>
+        </div>
+      </form>
+
+      <div class="examples" id="examples"><span>Or open a finished run:</span></div>
+    </section>
+
+    <section id="progress" class="progress" hidden>
+      <ol id="steps"></ol>
+    </section>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <section id="result" class="result" hidden>
+      <div class="r-head">
+        <p class="kicker" id="r-kicker"></p>
+        <h2 id="r-title"></h2>
+        <blockquote id="r-read"></blockquote>
+        <ul class="facts" id="r-facts"></ul>
+      </div>
+
+      <div class="toggle-bar">
+        <div class="seg big" role="tablist" aria-label="Source">
+          <button role="tab" id="t-data" aria-selected="true">With Qloo data</button>
+          <button role="tab" id="t-guess" aria-selected="false">AI guess, no data</button>
+        </div>
+        <p class="overlap" id="overlap"></p>
+      </div>
+
+      <div id="data-view">
+        <section class="block" id="b-partners"><header><h3>Partners to pitch</h3><p>Brands your audience also loves — complementary, not competitors. Each comes with a draft you edit and send yourself.</p></header><div class="cards" id="partners"></div></section>
+        <section class="block" id="b-local" hidden><header><h3>Neighbours to team up with</h3><p>Places nearby that the same people love.</p></header><div class="cards" id="local"></div></section>
+        <section class="block"><header><h3>Podcasts to sponsor</h3><p>Shows this audience listens to, screened for brand safety.</p></header><div class="cards" id="podcasts"></div></section>
+        <section class="block two">
+          <div><header><h3 id="pl-title">Playlist</h3><p>Artists this audience plays — for the shop floor or your stream.</p></header><ol class="playlist" id="playlist"></ol></div>
+          <div><header><h3>Content ideas</h3><p>Hooks built on things they already love.</p></header><div id="ideas"></div></div>
+        </section>
+        <details class="block held" id="held"><summary id="held-sum"></summary><ul id="held-list"></ul></details>
+        <details class="block raw"><summary>Every Qloo result the agent saw</summary><div id="raw"></div></details>
+      </div>
+
+      <div id="guess-view" hidden>
+        <p class="guess-note" id="guess-note"></p>
+        <div class="guess-grid" id="guess"></div>
+      </div>
+    </section>
+
+    <section class="how" id="how">
+      <h2>How it works</h2>
+      <ol class="how-steps">
+        <li><b>Find</b><span>The agent works out what you are — brand, venue, creator or podcast — and resolves you to a Qloo entity.</span></li>
+        <li><b>Listen</b><span>It asks Qloo what your audience also loves: podcasts, brands, artists, films, and nearby places for venues.</span></li>
+        <li><b>Screen</b><span>Explicit, partisan or extremist results are held back from ad and partner picks — and counted, never hidden.</span></li>
+        <li><b>Act</b><span>A writer model turns the data into a plan. It may only cite Qloo results by id; anything it invents is removed in code.</span></li>
+      </ol>
+      <p class="control">The <b>AI guess</b> tab is the control: the same model, asked the same questions without data. Where the two lists differ, the plan is coming from your audience, not from stereotypes.</p>
+    </section>
+
+    <section class="how" id="mcp">
+      <h2>Use it from your own agent</h2>
+      <p>The same tools are an MCP server (Streamable HTTP): <code id="mcp-url">/mcp</code> — <code>find_entity</code>, <code>audience_affinities</code>, <code>audience_action_plan</code>.</p>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p><b>AI disclosure.</b> Plans and email drafts are written by Google Gemini (<span id="m-plan">gemini-3.1-pro-preview</span>; research and screening by <span id="m-fast">gemini-3.5-flash</span>). Audience data comes from Qloo's taste graph and shows affinities — what people who like you also like — not verified facts about your customers.</p>
+    <p>Ideas and drafts only — not marketing, legal or financial advice. Nothing is sent from here; you edit and send drafts yourself. What you type is used for this run only and not stored. A Hun AI Lab project for the Qloo Agentic Hackathon.</p>
+  </footer>
+
+  <template id="tpl-card">
+    <article class="card">
+      <div class="pic"><img alt="" loading="lazy" referrerpolicy="no-referrer"></div>
+      <div class="body">
+        <h4></h4><p class="about"></p><p class="why"></p>
+        <div class="badges"></div>
+      </div>
+    </article>
+  </template>
+</body>
+</html>

@@ -27,12 +27,13 @@ export class Ledger {
 }
 
 // the tools the research agent (and the MCP server) can call
-export function researchTools(ledger) {
+export function researchTools(ledger, emit = () => {}) {
   return {
     find_entity: {
       description: 'Look up a business, venue, creator, podcast or title in Qloo. Returns up to 4 candidates with their type and a short description. Always pass the type you believe it is.',
       inputSchema: z.object({ name: z.string(), type: z.enum(INPUT_TYPES) }),
       execute: async ({ name, type }) => {
+        emit({ step: 'find', text: `Looking up “${name}” as a ${type}` });
         try { return { candidates: (await qloo.search(name, type, 4)).map(({ id, name, type, about, popularity }) => ({ id, name, type, about, popularity })) }; }
         catch (e) { return { error: e.message }; }
       },
@@ -41,7 +42,7 @@ export function researchTools(ledger) {
       description: 'Commit the 1–3 Qloo entity ids that represent the business (the business itself first; optionally up to two close references the user named). Call once before audience_affinities.',
       inputSchema: z.object({ ids: z.array(z.string()).min(1).max(3), names: z.array(z.string()).min(1).max(3) }),
       // new seeds = a new audience: results fetched for earlier seeds no longer apply
-      execute: async ({ ids, names }) => { ledger.seeds = ids.map((id, i) => ({ id, name: names[i] || id })); ledger.items.clear(); return { ok: true }; },
+      execute: async ({ ids, names }) => { ledger.seeds = ids.map((id, i) => ({ id, name: names[i] || id })); ledger.items.clear(); emit({ step: 'seeds', text: `Audience of ${ledger.seeds.map((x) => x.name).join(' + ')}` }); return { ok: true }; },
     },
     audience_affinities: {
       description: 'What else the audience of the seed entities loves, from Qloo: one output type per call. Optional: location (a city, only for type place), age bracket filter.',
@@ -52,6 +53,7 @@ export function researchTools(ledger) {
       }),
       execute: async ({ type, location, age }) => {
         if (!ledger.seeds.length) return { error: 'call set_seeds first' };
+        emit({ step: 'qloo', text: `Qloo: which ${type === 'movie' ? 'films' : `${type}s`} does this audience love${location ? ` in ${location}` : ''}?` });
         try {
           const r = await qloo.insights(ledger.seeds.map((s) => s.id), type, { take: 12, location: type === 'place' ? location : undefined, age });
           ledger.add(type, r.items, { location, age, fetched: r.fetched, cached: r.cached });
@@ -72,9 +74,9 @@ const INSTRUCTIONS = `You research a business's audience with Qloo's taste data.
 4. If a call says there is no usable signal, go back to step 2 with the next candidate (at most once).
 5. Finish with one line: the entity you used and anything that failed. Do not write the plan — another step does.`;
 
-export async function research(brief, { log = () => {} } = {}) {
+export async function research(brief, { log = () => {}, emit = () => {} } = {}) {
   const ledger = new Ledger();
-  const specs = researchTools(ledger);
+  const specs = researchTools(ledger, emit);
   if (hasModel()) {
     try {
       const tools = Object.fromEntries(Object.entries(specs).map(([k, v]) => [k, tool(v)]));

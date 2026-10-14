@@ -27,7 +27,7 @@ const gate = () => (chain = chain.then(async () => {
   last = Date.now();
 }));
 
-export const stats = { calls: 0, cached: 0 };
+export const stats = { calls: 0, cached: 0, monthRemaining: null };
 
 async function get(p, params, { key = process.env.QLOO_API_KEY } = {}) {
   const qs = new URLSearchParams(Object.entries(params).filter(([, v]) => v !== undefined && v !== '').map(([k, v]) => [k, String(v)]));
@@ -47,6 +47,8 @@ async function get(p, params, { key = process.env.QLOO_API_KEY } = {}) {
   stats.calls++;
   const res = await fetch(url, { headers: { 'X-Api-Key': key }, signal: AbortSignal.timeout(30_000) });
   const text = await res.text();
+  const left = res.headers.get('x-month-ratelimit-remaining');
+  if (left != null) stats.monthRemaining = Number(left);
   const at = new Date().toISOString();
   // 200s and 400s are answers (400 = "no usable signal" for that entity); 429/5xx are not cached
   if (res.status === 200 || res.status === 400) {
