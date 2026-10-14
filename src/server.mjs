@@ -28,7 +28,7 @@ const examples = () => {
 
 
 function send(res, code, body, type = 'application/json; charset=utf-8') {
-  res.writeHead(code, { 'Content-Type': type, ...SECURITY, 'Cache-Control': 'no-store' });
+  res.writeHead(code, { 'Content-Type': type, ...SECURITY, 'Cache-Control': 'no-store, no-transform' });
   res.end(typeof body === 'string' || Buffer.isBuffer(body) ? body : JSON.stringify(body));
 }
 
@@ -61,7 +61,7 @@ const server = http.createServer(async (req, res) => {
       if (!brief.name) return send(res, 400, { error: 'Enter a business, venue or creator name.' });
       const no = admit(clientIp(req));
       if (no) return send(res, no.status, { error: no.reason });
-      res.writeHead(200, { 'Content-Type': 'application/x-ndjson; charset=utf-8', ...SECURITY, 'Cache-Control': 'no-store', 'X-Accel-Buffering': 'no' });
+      res.writeHead(200, { 'Content-Type': 'application/x-ndjson; charset=utf-8', ...SECURITY, 'Cache-Control': 'no-store, no-transform', 'X-Accel-Buffering': 'no' });
       const line = (o) => res.write(JSON.stringify(o) + '\n');
       try {
         const r = await run(brief, { emit: (e) => line({ event: e }) });
@@ -76,7 +76,7 @@ const server = http.createServer(async (req, res) => {
       const rel = url.pathname === '/' ? 'index.html' : url.pathname.slice(1);
       const f = path.join(PUB, path.normalize(rel));
       if (f.startsWith(PUB + path.sep) && fs.existsSync(f) && fs.statSync(f).isFile()) {
-        res.writeHead(200, { 'Content-Type': MIME[path.extname(f)] || 'application/octet-stream', ...SECURITY, 'Cache-Control': 'public, max-age=300' });
+        res.writeHead(200, { 'Content-Type': MIME[path.extname(f)] || 'application/octet-stream', ...SECURITY, 'Cache-Control': 'public, max-age=300, no-transform' });
         return fs.createReadStream(f).pipe(res);
       }
     }
