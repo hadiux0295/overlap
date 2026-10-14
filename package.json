@@ -1,10 +1,11 @@
 {
-  "name": "audience-agent",
+  "name": "overlap",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "license": "MIT",
   "scripts": {
+    "start": "node src/server.mjs",
     "run": "node src/run.mjs",
     "test": "node --test test/*.test.mjs"
   },
@@ -13,5 +14,6 @@
     "@modelcontextprotocol/sdk": "1.32.1",
     "ai": "^7.0.137",
     "zod": "^4.6.5"
-  }
+  },
+  "description": "Who else does your audience love? A Qloo-powered audience-to-action agent."
 }
