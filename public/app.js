@@ -160,7 +160,7 @@ function render(r, { example }) {
   const o = r.overlap;
   if (o && r.guess) {
     const total = Object.values(o).reduce((a, v) => a + v.guessed, 0), shared = Object.values(o).reduce((a, v) => a + v.shared.length, 0);
-    $('overlap').replaceChildren('Without data, the same model guessed ', h('b', { text: `${total} names` }), ' — ', h('b', { text: `${shared}` }), ` appear in Qloo's results for this audience.`);
+    $('overlap').replaceChildren('Without data, the same model guessed ', h('b', { text: `${total} names` }), ' — ', h('b', { text: `${shared}` }), ` ${shared === 1 ? 'appears' : 'appear'} in Qloo's results for this audience.`);
     $('guess-note').textContent = `This is the control: ${r.meta.models?.guess || 'the same model'}, asked the same questions with no data. Names marked “in Qloo” also appear in Qloo's top results for this audience; everything else is the model's assumption.`;
     const cols = { partners: ['Brands', 'brand'], podcasts: ['Podcasts', 'podcast'], artists: ['Artists', 'artist'], films: ['Films', 'movie'] };
     $('guess').replaceChildren(...Object.entries(cols).map(([k, [title, kind]]) => {
