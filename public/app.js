@@ -118,6 +118,8 @@ function render(r, { example }) {
   const p = r.plan;
   const seeds = r.seeds.map((s) => s.name).join(' + ');
   $('r-kicker').textContent = example ? 'Finished run' : 'Your run';
+  $('r-example').hidden = !example;
+  $('r-example').textContent = example ? `Illustrative example — Overlap is not affiliated with or endorsed by ${seeds}. The drafts show what the agent writes for a business; nothing was sent.` : '';
   $('r-title').textContent = `The audience of ${seeds}`;
   $('r-read').textContent = p?.audience_read || 'The plan writer did not finish for this run — the raw Qloo results are below.';
   const n = Object.values(r.audience).flat().length;

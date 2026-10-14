@@ -60,6 +60,7 @@
     <section id="result" class="result" hidden>
       <div class="r-head">
         <p class="kicker" id="r-kicker"></p>
+        <p class="example-note" id="r-example" hidden></p>
         <h2 id="r-title"></h2>
         <blockquote id="r-read"></blockquote>
         <ul class="facts" id="r-facts"></ul>
@@ -76,7 +77,7 @@
       <div id="data-view">
         <section class="block" id="b-partners"><header><h3>Partners to pitch</h3><p>Brands your audience also loves — complementary, not competitors. Each comes with a draft you edit and send yourself.</p></header><div class="cards" id="partners"></div></section>
         <section class="block" id="b-local" hidden><header><h3>Neighbours to team up with</h3><p>Places nearby that the same people love.</p></header><div class="cards" id="local"></div></section>
-        <section class="block"><header><h3>Podcasts to sponsor</h3><p>Shows this audience listens to, screened for brand safety.</p></header><div class="cards" id="podcasts"></div></section>
+        <section class="block"><header><h3>Podcasts to sponsor</h3><p>Shows this audience listens to, screened automatically for brand safety — the screen can miss things, so listen before you buy.</p></header><div class="cards" id="podcasts"></div></section>
         <section class="block two">
           <div><header><h3 id="pl-title">Playlist</h3><p>Artists this audience plays — for the shop floor or your stream.</p></header><ol class="playlist" id="playlist"></ol></div>
           <div><header><h3>Content ideas</h3><p>Hooks built on things they already love.</p></header><div id="ideas"></div></div>
@@ -96,7 +97,7 @@
       <ol class="how-steps">
         <li><b>Find</b><span>The agent works out what you are — brand, venue, creator or podcast — and resolves you to a Qloo entity.</span></li>
         <li><b>Listen</b><span>It asks Qloo what your audience also loves: podcasts, brands, artists, films, and nearby places for venues.</span></li>
-        <li><b>Screen</b><span>Explicit, partisan or extremist results are held back from ad and partner picks — and counted, never hidden.</span></li>
+        <li><b>Screen</b><span>Explicit, partisan or extremist results are held back from ad and partner picks — and counted, never hidden. The screen is automatic and can miss things.</span></li>
         <li><b>Act</b><span>A writer model turns the data into a plan. It may only cite Qloo results by id; anything it invents is removed in code.</span></li>
       </ol>
       <p class="control">The <b>AI guess</b> tab is the control: the same model, asked the same questions without data. Where the two lists differ, the plan is coming from your audience, not from stereotypes.</p>
@@ -110,7 +111,9 @@
 
   <footer class="foot">
     <p><b>AI disclosure.</b> Plans and email drafts are written by Google Gemini (<span id="m-plan">gemini-3.1-pro-preview</span>; research and screening by <span id="m-fast">gemini-3.5-flash</span>). Audience data comes from Qloo's taste graph and shows affinities — what people who like you also like — not verified facts about your customers.</p>
-    <p>Ideas and drafts only — not marketing, legal or financial advice. Nothing is sent from here; you edit and send drafts yourself. What you type is used for this run only and not stored. A Hun AI Lab project for the Qloo Agentic Hackathon.</p>
+    <p>Ideas and drafts for reflection and planning only — not marketing, legal or financial advice. Nothing is sent from here; you edit and send drafts yourself.</p>
+    <p><b>Privacy.</b> What you type is sent to Google Gemini and Qloo to produce your run; we do not keep it. No accounts, cookies or analytics. Your IP address and request times are held in memory for up to 24 hours for rate limiting only.</p>
+    <p>Example runs use public businesses for illustration; Overlap is not affiliated with or endorsed by them. Images and logos come from Qloo and belong to their owners. A Hun AI Lab project for the Qloo Agentic Hackathon — not an official Qloo product.</p>
   </footer>
 
   <template id="tpl-card">

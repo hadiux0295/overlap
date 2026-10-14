@@ -87,6 +87,7 @@ button { font: inherit; }
 .error { padding: 14px 18px; color: var(--hold); background: var(--card); border: 1px solid var(--hold); border-radius: var(--radius); }
 
 .result { padding: 24px 0 8px; border-top: 1px solid var(--line); }
+.example-note { margin: 0 0 12px; padding: 8px 12px; font-size: 13.5px; color: var(--ink-2); background: var(--paper-2); border-radius: 8px; }
 .r-head h2 { margin: 0; font: 400 clamp(34px, 5vw, 54px)/1.05 var(--serif); letter-spacing: -0.015em; }
 .r-head blockquote { max-width: 70ch; margin: 18px 0; padding: 0 0 0 18px; border-left: 3px solid var(--accent); font: 400 22px/1.4 var(--serif); color: var(--ink); }
 .facts { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
